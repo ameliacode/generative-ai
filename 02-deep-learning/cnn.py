@@ -1,7 +1,6 @@
-import numpy as np
-from keras import datasets, layers, utils, models, optimizers
 import matplotlib.pyplot as plt
-
+import numpy as np
+from keras import datasets, layers, models, optimizers, utils
 
 (x_train, y_train), (x_test, y_test) = datasets.cifar10.load_data()
 
