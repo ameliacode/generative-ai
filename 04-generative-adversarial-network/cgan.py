@@ -28,7 +28,7 @@ def preprocess(img):
     return img
 
 
-train = train_data.map(lambda x, y: (preprocess(x), tf.one_hot(y, depth=CLASSES)))
+train = train_data.map(lambda x, y: (preprocess(x), tf.one_hot(y, depth=2)))
 
 
 class CGAN(models.Model):
