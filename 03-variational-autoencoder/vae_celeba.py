@@ -148,7 +148,7 @@ z_sample = np.random.normal(size=(grid_width * grid_height, 200))
 # z_new = z_sample + alpha * feature_vector
 # z_new = z_A * (1 - alpha) + z_B * alpha : linear interpolation
 
-reconstructions = vae.decoder.predict(z_sample)
+reconstructions = decoder.predict(z_sample)
 
 fig = plt.figure(figsize=(18, 5))
 fig.subplots_adjust(hspace=0.4, wspace=0.4)
