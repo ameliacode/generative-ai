@@ -1,13 +1,14 @@
 import kagglehub
+import pandas as pd
 import tensorflow as tf
 from keras import layers, losses, metrics, models, optimizers, utils
 
 # path = kagglehub.dataset_download("joosthazelzet/lego-brick-images")
 
 train_data = utils.image_dataset_from_directory(
-    "./data/lego-brick-images/versions/4/dataset/",
+    "./data/celeba-dataset/versions/2/img_align_celeba/img_align_celeba",
     labels=None,
-    color_mode="grayscale",
+    color_mode="rgb",
     image_size=(64, 64),
     batch_size=128,
     shuffle=True,
@@ -15,13 +16,19 @@ train_data = utils.image_dataset_from_directory(
     interpolation="bilinear",
 )
 
+attributes = pd.read_csv(
+    "./data/celba-dataset/versions/2/img_align_celeba/list_attr_celeba.csv"
+)
+labels = attributes["Blond_Hair"].tolist()
+int_labels = [x if x == 1 else 0 for x in labels]
+
 
 def preprocess(img):
     img = (tf.cast(img, "float32") - 127.5) / 127.5
     return img
 
 
-train = train_data.map(lambda x: preprocess(x))
+train = train_data.map(lambda x, y: (preprocess(x), tf.one_hot(y, depth=CLASSES)))
 
 
 class CGAN(models.Model):
