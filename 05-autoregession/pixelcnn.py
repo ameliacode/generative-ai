@@ -118,10 +118,7 @@ class ImageGenerator(callbacks.Callback):
     def on_epoch_end(self, epoch, logs=None):
         if epoch % 10 == 0:
             generated_images = self.generate(temperature=1.0)
-            display(
-                generated_images,
-                save_to="./output/generated_img_%03d.png" % (epoch),
-            )
+            # plot it and save generate images
 
 
 img_generator_callback = ImageGenerator(num_img=10)
