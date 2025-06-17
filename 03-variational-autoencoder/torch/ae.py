@@ -86,9 +86,9 @@ class Decoder(nn.Module):
         return x
 
 
-class Autoencoder(nn.Module):
+class AE(nn.Module):
     def __init__(self):
-        super(Autoencoder, self).__init__()
+        super(AE, self).__init__()
         self.encoder = Encoder()
         self.decoder = Decoder()
 
@@ -98,7 +98,7 @@ class Autoencoder(nn.Module):
         return decoded
 
 
-model = Autoencoder()
+model = AE()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 loss_fn = nn.BCELoss()
 
