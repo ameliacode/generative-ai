@@ -35,38 +35,21 @@ class CNN(nn.Module):
         self.conv4 = nn.Conv2d(64, 64, kernel_size=3, stride=2, padding=1)
         self.bn4 = nn.BatchNorm2d(64)
 
-        self.fc1 = nn.Linear(
-            64 * 8 * 8, 128
-        )  # 32x32 -> 16x16 -> 8x8 after 2 stride-2 convs
+        self.fc1 = nn.Linear(64 * 8 * 8, 128)
         self.bn5 = nn.BatchNorm1d(128)
         self.dropout = nn.Dropout(0.5)
         self.fc2 = nn.Linear(128, 10)
 
     def forward(self, x):
-        x = self.conv1(x)
-        x = self.bn1(x)
-        x = F.leaky_relu(x)
-
-        x = self.conv2(x)
-        x = self.bn2(x)
-        x = F.leaky_relu(x)
-
-        x = self.conv3(x)
-        x = self.bn3(x)
-        x = F.leaky_relu(x)
-
-        x = self.conv4(x)
-        x = self.bn4(x)
-        x = F.leaky_relu(x)
+        x = F.leaky_relu(self.bn1(self.conv1(x)))
+        x = F.leaky_relu(self.bn2(self.conv2(x)))
+        x = F.leaky_relu(self.bn3(self.conv3(x)))
+        x = F.leaky_relu(self.bn4(self.conv4(x)))
 
         x = x.view(x.size(0), -1)
-
-        x = self.fc1(x)
-        x = self.bn5(x)
-        x = F.leaky_relu(x)
+        x = F.leaky_relu(self.bn5(self.fc1(x)))
         x = self.dropout(x)
         x = self.fc2(x)
-
         return x
 
 
