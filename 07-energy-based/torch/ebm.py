@@ -156,7 +156,7 @@ class EBM(nn.Module):
 
 ebm = EBM()
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-writer = SummaryWriter(f"./logs/06-{timestamp}")
+writer = SummaryWriter(f"./logs/07-{timestamp}")
 
 for epoch in range(60):
     for batch_idx, (real_imgs,) in enumerate(train_loader):
