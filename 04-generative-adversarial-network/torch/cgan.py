@@ -21,7 +21,7 @@ LABEL = "Smiling"
 CLASSES = 2
 
 
-class CelebADataset(torch.utils.data.Dataset):
+class CelebADataset(Dataset):
     def __init__(self, root_dir, transform=None):
         self.root_dir = root_dir
         self.transform = transform
@@ -316,7 +316,7 @@ def train(data_path, epochs=100, batch_size=128, save_every=20):
     output_dir = f"./output/04-{timestamp}"
     os.makedirs(output_dir, exist_ok=True)
 
-    log_dir = f"{output_dir}/logs"
+    log_dir = f"logs/04-{timestamp}"
     cgan.writer = SummaryWriter(log_dir)
 
     step = 0
