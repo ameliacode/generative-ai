@@ -10,6 +10,9 @@ import torchvision
 from torch.utils.data import DataLoader, TensorDataset
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
+import warnings
+
+warnings.filterwarnings("ignore")
 
 train_data = torchvision.datasets.FashionMNIST("./data", train=True, download=True)
 test_data = torchvision.datasets.FashionMNIST("./data", train=False, download=True)
@@ -30,27 +33,6 @@ test_dataset = TensorDataset(x_test)
 
 train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
-
-
-class EBMModel(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=5, stride=2, padding=2)
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1)
-        self.conv3 = nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1)
-        self.conv4 = nn.Conv2d(64, 64, kernel_size=3, stride=2, padding=1)
-        self.flatten = nn.Flatten()
-        self.dense = nn.Linear(2 * 2 * 64, 64)
-        self.ebm_output = nn.Linear(64, 1)
-
-    def forward(self, x):
-        x = F.silu(self.conv1(x))
-        x = F.silu(self.conv2(x))
-        x = F.silu(self.conv3(x))
-        x = F.silu(self.conv4(x))
-        x = self.flatten(x)
-        x = F.silu(self.dense(x))
-        return self.ebm_output(x)
 
 
 def generate_samples(model, inp_imgs, steps, step_size, noise):
@@ -158,7 +140,7 @@ ebm = EBM()
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 writer = SummaryWriter(f"./logs/07-{timestamp}")
 
-for epoch in range(60):
+for epoch in tqdm(range(60)):
     for batch_idx, (real_imgs,) in enumerate(train_loader):
         metrics = ebm.train_step(real_imgs)
         step = epoch * len(train_loader) + batch_idx

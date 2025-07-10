@@ -8,7 +8,7 @@ import torch.nn as nn
 from sklearn.datasets import make_moons
 from torch.utils.data import DataLoader, Dataset
 from torch.utils.tensorboard import SummaryWriter
-
+from tqdm import tqdm
 
 class MoonDataset(Dataset):
     def __init__(self):
@@ -108,7 +108,7 @@ dataloader = DataLoader(dataset, batch_size=256, shuffle=True)
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 writer = SummaryWriter(f"./logs/06-{timestamp}")
 
-for epoch in range(100):  # 300
+for epoch in tqdm(range(300)): 
     epoch_loss = 0
     for batch_idx, (data, _) in enumerate(dataloader):
         optimizer.zero_grad()

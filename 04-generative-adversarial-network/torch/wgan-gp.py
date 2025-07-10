@@ -12,6 +12,7 @@ from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
+import kagglehub
 
 os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -244,7 +245,7 @@ def train(data_path, epochs=100, batch_size=128, save_every=20):
     wgan_gp.writer = SummaryWriter(log_dir)
 
     step = 0
-    for epoch in tqdm(range(epochs), desc="Training"):
+    for epoch in tqdm(range(epochs)):
         c_losses = []
         g_losses = []
         wass_losses = []
